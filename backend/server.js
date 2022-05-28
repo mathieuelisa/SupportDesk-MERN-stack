@@ -1,13 +1,22 @@
 import express from "express";
 import "dotenv/config";
 
-const app = express();
+import { errorHandler } from "./Middlewares/errorMiddleware.js";
+import userRouter from "./Routes/userRoute.js";
 
+const app = express();
 const PORT = process.env.PORT || 8000;
 
-app.get("/", (req, res) => {
-  res.status(200).json({ message: "ceci est un test" });
-});
+app.use(express.json());
+app.use(
+  express.urlencoded({
+    extended: true,
+  })
+);
+
+//Routes
+app.use("/api/users", userRouter);
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);

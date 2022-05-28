@@ -3,3 +3,11 @@ GET http://localhost:5000
 
 ###
 
+POST http://localhost:5000/api/users/register
+Content-Type: application/json
+
+{
+    "name" : "Mathieu",
+    "email": "test@exemple.com",
+    "password":"abcdef"
+}
