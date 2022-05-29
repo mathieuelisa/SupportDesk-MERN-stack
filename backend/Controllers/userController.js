@@ -50,7 +50,23 @@ export const userController = {
   // api/users
   // PUBLIC
   login: asyncHandler(async (req, res) => {
-    res.send("Login pages");
+    const { email, password } = req.body;
+
+    const user = await User.findOne({ email });
+
+    //Check if user password in req.body match with password of the user
+    if (user && (await bcrypt.compare(password, user.password))) {
+      res.status(200);
+      res.json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        isAdmin: user.isAdmin,
+      });
+    } else {
+      res.status(401);
+      throw new Error("Sorry you're not authorized");
+    }
   }),
 };
 
