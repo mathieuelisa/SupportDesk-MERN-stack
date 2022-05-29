@@ -1,4 +1,7 @@
 import asyncHandler from "express-async-handler";
+import bcrypt from "bcryptjs";
+
+import User from "../Models/userModel.js";
 
 export const userController = {
   // Register a new user
@@ -10,12 +13,36 @@ export const userController = {
     if (!name || !email || !password) {
       res.status(400);
       throw new Error("Missing something sorry, ");
-    } else {
+    }
+
+    const userAlreadyExists = await User.findOne({ email });
+
+    if (userAlreadyExists) {
+      res.status(400);
+      throw new Error("User already exist, sorry");
+    }
+    // Hash password with bcrypt
+    const saltRound = await bcrypt.genSalt(10);
+    const hashPassword = await bcrypt.hash(password, saltRound);
+
+    // Create user
+    const user = await User.create({
+      name,
+      email,
+      password: hashPassword,
+    });
+
+    if (user) {
+      res.status(201);
       res.json({
-        email,
-        name,
-        password,
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        isAdmin: user.isAdmin,
       });
+    } else {
+      res.status(400);
+      throw new Error("Sorry, your user is not create");
     }
   }),
 
