@@ -1,3 +1,4 @@
 PORT=putYourPortHere
 NODE_ENV=YourEnvironnementHere
 MONGO_URI=mongodb+srv://<name>:<password>@cluster0.avw0s.mongodb.net/?retryWrites=true&w=majority
+SECRET_JWT=YourJwtPassword

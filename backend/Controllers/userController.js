@@ -2,6 +2,7 @@ import asyncHandler from "express-async-handler";
 import bcrypt from "bcryptjs";
 
 import User from "../Models/userModel.js";
+import generateToken from "../Utils/token.js";
 
 export const userController = {
   // Register a new user
@@ -39,6 +40,7 @@ export const userController = {
         name: user.name,
         email: user.email,
         isAdmin: user.isAdmin,
+        token: generateToken(user._id),
       });
     } else {
       res.status(400);
@@ -62,6 +64,7 @@ export const userController = {
         name: user.name,
         email: user.email,
         isAdmin: user.isAdmin,
+        token: generateToken(user._id),
       });
     } else {
       res.status(401);
