@@ -1,5 +1,5 @@
 # GET METHOD
-GET http://localhost:5000/api/users/me
+GET http://localhost:5000/api/users/user
 
 ###
 
@@ -36,7 +36,7 @@ Content-Type: application/json
 ###
 
 # GET METHOD WITH BEARER FOR PROTECT ROUTES
-GET http://localhost:5000/api/users/me
+GET http://localhost:5000/api/users/user
 Authorization : Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyOTVmMTU5NGIzNTdiMTc5MDg2YmU4OSIsImlhdCI6MTY1Mzk5MzgxOCwiZXhwIjoxNjU5MTc3ODE4fQ.8YqGthdG_2x1xIDtmSa40LO2xqBqYz5bg4jfwEfCc-Y
 
 ###

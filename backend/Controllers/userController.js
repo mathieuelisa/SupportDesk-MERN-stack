@@ -72,6 +72,9 @@ export const userController = {
     }
   }),
 
+  // Get info user
+  // api/users/user
+  // PRIVATE
   getUserInfos: asyncHandler(async (req, res) => {
     res.status(200).json({
       id: req.user._id,
