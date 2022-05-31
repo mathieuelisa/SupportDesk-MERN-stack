@@ -2,9 +2,11 @@ import { useState } from "react";
 import { FaUser } from "react-icons/fa";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { register } from "../features/Auth/authSlice.js";
+import { useDispatch, useSelector } from "react-redux";
 
 function Register() {
-  const notify = () => toast("Submitted");
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -23,15 +25,28 @@ function Register() {
     e.preventDefault();
 
     if (formData.password !== formData.password2) {
-      toast.error("Passwords dont match");
+      toast.error("Passwords don't match");
+    } else {
+      const myUser = {
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+      };
+
+      //Dispatch action for submitted
+      dispatch(register(myUser));
     }
-    //Dispatch action for submitted
   };
+
+  const { user, isError, isSuccess, isLoading, message } = useSelector(
+    (state) => state.auth
+  );
+
   return (
     <>
       <section className="heading">
         <h1>
-          <FaUser /> Register
+          <FaUser /> Register 
         </h1>
         <p>Please create an account</p>
       </section>

@@ -1,10 +1,18 @@
 import { useState } from "react";
 import { FaSignInAlt } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { login } from "../features/Auth/authSlice";
 
 function Login() {
   const notify = () => toast("Submitted");
+
+  const { user, isLoading, isError, message } = useSelector(
+    (state) => state.auth
+  );
+  const dispatch = useDispatch();
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -20,7 +28,13 @@ function Login() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    //Dispatch action for submitted
+    const userData = {
+      email: formData.email,
+      password: formData.password,
+    };
+
+    //Dispatch action for login
+    dispatch(login(userData));
   };
 
   return (
