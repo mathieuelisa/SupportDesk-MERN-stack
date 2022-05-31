@@ -71,6 +71,14 @@ export const userController = {
       throw new Error("Sorry you're not authorized");
     }
   }),
+
+  getUserInfos: asyncHandler(async (req, res) => {
+    res.status(200).json({
+      id: req.user._id,
+      name: req.user.name,
+      email: req.user.email,
+    });
+  }),
 };
 
 export default userController;
