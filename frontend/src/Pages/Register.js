@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { FaUser } from "react-icons/fa";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { register, reset } from "../features/Auth/authSlice.js";
+import { register, reset, logout } from "../features/Auth/authSlice.js";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 

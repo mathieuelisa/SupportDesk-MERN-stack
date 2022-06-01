@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-//Obtenir les infos si un user est dans le localstorage
-const user = JSON.parse(localStorage.getItem('user'));
+// localstorage stock mes data de user
+const user = JSON.parse(localStorage.getItem("user"));
 
 const initialState = {
   user: user ? user : null,
@@ -20,7 +20,7 @@ const initialState = {
 //   }
 // );
 
-// ensuite je peux initialiser avec gerant avec un localstorage
+// register user
 export const register = createAsyncThunk(
   "auth/register",
   async (data, { rejectWithValue }) => {
@@ -39,8 +39,14 @@ export const register = createAsyncThunk(
   }
 );
 
+// A finir !!!
 export const login = createAsyncThunk("auth/login", async (user, thunkAPI) => {
   console.log(user);
+});
+
+// logout user from localstorage
+export const logout = createAsyncThunk("auth/logout", async () => {
+  await localStorage.removeItem("user");
 });
 
 export const authSlice = createSlice({
@@ -55,7 +61,7 @@ export const authSlice = createSlice({
     },
   },
 
-  // sert à gerer le pending,fulfilled et le reject
+  // sert à gerer le pending,fulfilled et le reject 
   extraReducers: (builder) => {
     builder
       .addCase(register.pending, (state) => {
@@ -71,6 +77,9 @@ export const authSlice = createSlice({
         state.isLoading = false;
         state.user = null;
         state.message = action.payload;
+      })
+      .addCase(logout.fulfilled, (state) => {
+        state.user = null;
       });
   },
 });
