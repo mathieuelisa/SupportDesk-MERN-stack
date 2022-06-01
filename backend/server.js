@@ -2,6 +2,7 @@ import express from "express";
 import "dotenv/config";
 import connectDB from "./Config/db.js";
 import colors from "colors";
+import cors from "cors";
 
 import { errorHandler } from "./Middlewares/errorMiddleware.js";
 import userRouter from "./Routes/userRoute.js";
@@ -12,6 +13,7 @@ connectDB();
 const app = express();
 const PORT = process.env.PORT || 8000;
 
+app.use(cors());
 app.use(express.json());
 app.use(
   express.urlencoded({
