@@ -39,10 +39,24 @@ export const register = createAsyncThunk(
   }
 );
 
-// A finir !!!
-export const login = createAsyncThunk("auth/login", async (user, thunkAPI) => {
-  console.log(user);
-});
+export const login = createAsyncThunk(
+  "auth/login",
+  async (data, { rejectWithValue }) => {
+    try {
+      console.log(data);
+      const response = await axios.post(
+        "http://localhost:5000/api/users/login",
+        data
+      );
+      if (response.data) {
+        localStorage.setItem("user", JSON.stringify(response.data));
+      }
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
 
 // logout user from localstorage
 export const logout = createAsyncThunk("auth/logout", async () => {
@@ -61,7 +75,7 @@ export const authSlice = createSlice({
     },
   },
 
-  // sert à gerer le pending,fulfilled et le reject 
+  // sert à gerer le pending,fulfilled et le reject
   extraReducers: (builder) => {
     builder
       .addCase(register.pending, (state) => {
@@ -80,6 +94,20 @@ export const authSlice = createSlice({
       })
       .addCase(logout.fulfilled, (state) => {
         state.user = null;
+      })
+      .addCase(login.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.isLoading = false;
+        state.isSuccess = true;
+      })
+      .addCase(login.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(login.rejected, (state, action) => {
+        state.isError = true;
+        state.isLoading = false;
+        state.user = null;
+        state.message = action.payload;
       });
   },
 });

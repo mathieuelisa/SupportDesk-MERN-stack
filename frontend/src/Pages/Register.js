@@ -5,6 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { register, reset, logout } from "../features/Auth/authSlice.js";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Spinner from "../Components/Spinner.js";
 
 function Register() {
   const dispatch = useDispatch();
@@ -55,6 +56,10 @@ function Register() {
       dispatch(register(myUser));
     }
   };
+
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   return (
     <>

@@ -1,17 +1,31 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaSignInAlt } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { login } from "../features/Auth/authSlice";
+import { login, reset } from "../features/Auth/authSlice";
+import Spinner from "../Components/Spinner";
 
 function Login() {
-  const notify = () => toast("Submitted");
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const { user, isLoading, isError, message } = useSelector(
+  const { user, isLoading, isError, message, isSuccess } = useSelector(
     (state) => state.auth
   );
-  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (isSuccess || user) {
+      navigate("/");
+    }
+
+    if (isError) {
+      toast.error("Profil not found");
+    }
+
+    dispatch(reset());
+  }, [isSuccess, navigate, dispatch, user, isError, message]);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -33,9 +47,12 @@ function Login() {
       password: formData.password,
     };
 
-    //Dispatch action for login
     dispatch(login(userData));
   };
+
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   return (
     <>
